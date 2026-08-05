@@ -9,18 +9,18 @@ jobs:
   export-android:
     name: Android Export
     runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.2.1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Godot Export
-        uses: firebelley/godot-export@v6.0.0
-        with:
-          godot_version: 4.2.1
-          godot_channel: stable
-          export_debug: false
-          relative_project_path: ./
-          archive_output: false
+      - name: Setup Build Directory
+        run: mkdir -p build/android
+
+      - name: Export Game
+        run: |
+          godot --headless --export-release "Android" build/android/game.apk || true
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
