@@ -1,0 +1,36 @@
+name: "Godot Android Build"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  export-android:
+    name: Android Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.2.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - name: Setup Templates
+        run: |
+          mkdir -p ~/.local/share/godot/build_templates
+          mv /root/.local/share/godot/build_templates/4.2.1.stable ~/.local/share/godot/build_templates/
+
+      - name: Create Export Preset Directory
+        run: mkdir -p build/android
+
+      - name: Android Build
+        run: godot --headless --export-release "Android" build/android/game.apk
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Android-APK
+          path: build/android/game.apk
+          
