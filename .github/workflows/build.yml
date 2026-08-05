@@ -13,12 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Godot Android Export
-        uses: chickenandpork/godot-export-action@v1
+      - name: Godot Export
+        uses: firebelley/godot-export@v6.0.0
         with:
-          godot_version: "4.2.1"
-          export_preset: "Android"
-          export_path: "build/android/game.apk"
+          godot_version: 4.2.1
+          godot_channel: stable
+          export_debug: false
+          relative_project_path: ./
+          archive_output: false
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
